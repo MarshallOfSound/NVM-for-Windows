@@ -35,7 +35,10 @@ namespace nvm_windows
             {
                 NodeVersion tmp = new NodeVersion();
                 tmp.Version = Path.GetFileName(versionPath);
-                versions.Add(tmp);
+                if (tmp.Version.StartsWith("v"))
+                {
+                    versions.Add(tmp);
+                }
             }
             return versions;
         }
