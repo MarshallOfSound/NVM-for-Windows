@@ -35,9 +35,8 @@ namespace nvm_windows
 
                 WebClient myWebClient = new WebClient();
                 myWebClient.DownloadFile(targetURL, fileName);
-
-                Console.WriteLine("Successfully Downloaded");
             }
+            Console.WriteLine("Successfully Downloaded Node.JS: " + target.Version);
 
             if (!Utils.NPMDownloaded(target))
             {
@@ -54,9 +53,8 @@ namespace nvm_windows
                 string npmExecPath = Path.Combine(Utils.GetNodeVersionContainer(target), "npm.cmd");
                 if (File.Exists(npmExecPath)) File.Delete(npmExecPath);
                 File.Copy(Path.Combine(targetFolder, "npm", "bin", "npm.cmd"), Path.Combine(Utils.GetNodeVersionContainer(target), "npm.cmd"));
-
-                Console.WriteLine("Successfully Downloaded");
             }
+            Console.WriteLine("Successfully Downloaded NPM version: " + target.Npm);
         }
 
         private static void ExtractNPM(string fileName, string targetFolder)
