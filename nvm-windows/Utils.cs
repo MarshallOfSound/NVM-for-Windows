@@ -51,9 +51,19 @@ namespace nvm_windows
 
         public static NodeVersion getCurrentNodeVersion()
         {
+            string nodeVersionPath = Path.Combine(GetContainer(), "node-version");
+            if (!File.Exists(nodeVersionPath))
+            {
+                return null;
+            }
+            string lastVersion = File.ReadAllText(nodeVersionPath);
             NodeVersion tmp = new NodeVersion();
-            tmp.Version = "v6.3.1";
-            return tmp;
+            tmp.Version = lastVersion;
+            if (NodeDownloaded(tmp))
+            {
+                return tmp;
+            }
+            return null;
         }
     }
 }

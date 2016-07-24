@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace nvm_windows
 {
@@ -16,23 +17,59 @@ namespace nvm_windows
         public static void LinkWithID(NodeVersion v, string linkID)
         {
             string containerPath = Utils.GetContainer();
-            string linkPath = Path.Combine(containerPath, "link-" + linkID);
+            string linkPath = Path.Combine(containerPath, ".links", "link-" + linkID);
             Directory.CreateDirectory(linkPath);
 
-            string[] nodeLink =
+            List<string> nodeLink = new List<string>();
+            nodeLink.Add("@echo OFF");
+            if (v != null) {
+                nodeLink.Add(Path.Combine(Utils.GetNodeVersionContainer(v), "node.exe") + " %*");
+            } else
             {
-                "@echo OFF",
-                Path.Combine(Utils.GetNodeVersionContainer(v), "node.exe") + " %*"
-            };
+                nodeLink.Add("echo No Node.JS version installed.  Use 'nvm install [version]' to install one");
+            }
             File.WriteAllLines(Path.Combine(linkPath, "node.cmd"), nodeLink);
 
-            string[] npmLink =
+            List<String> npmLink = new List<string>();
+            npmLink.Add("@echo OFF");
+            if (v != null)
             {
-                "@echo OFF",
-                // Path.Combine(Utils.GetNodeVersionContainer(v), "npm.cmd") + " config set prefix %APPDATA%\nvm-windows\bin",
-                Path.Combine(Utils.GetNodeVersionContainer(v), "npm.cmd") + " %*"
-            };
+                npmLink.Add(Path.Combine(Utils.GetNodeVersionContainer(v), "npm.cmd") + " %*");
+            } else
+            {
+                npmLink.Add("echo No Node.JS version installed.  Use 'nvm install [version]' to install one");
+            }
+
+            EnsurePrefixSet();
+
             File.WriteAllLines(Path.Combine(linkPath, "npm.cmd"), npmLink);
+        }
+
+        public static void EnsurePrefixSet()
+        {
+            string userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string npmrcPath = Path.Combine(userDir, ".npmrc");
+            string prefixConf = "prefix=" + Path.Combine(Utils.GetNodeContainer(), "bin");
+
+            if (File.Exists(npmrcPath))
+            {
+                string[] lines = File.ReadAllLines(npmrcPath);
+                List<string> newLines = new List<string>();
+                foreach (string line in lines)
+                {
+                    if (new Regex(@"^prefix=").IsMatch(line))
+                    {
+                        newLines.Add(prefixConf);
+                    } else
+                    {
+                        newLines.Add(line);
+                    }
+                }
+                File.WriteAllLines(npmrcPath, newLines);
+            } else
+            {
+                File.WriteAllText(npmrcPath, prefixConf);
+            }
         }
     }
 }

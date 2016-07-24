@@ -18,6 +18,7 @@ namespace nvm_windows
                 Console.Error.WriteLine("No version matching: " + opts.Version + " found in installed versions.  Run 'nvm install " + opts.Version + "' to install it");
             } else
             {
+                File.WriteAllText(Path.Combine(Utils.GetContainer(), "node-version"), target.Version);
                 Link.LinkWithID(target, Environment.GetEnvironmentVariable("LINK_ID"));
                 Console.WriteLine("Now using Node.JS " + target.Version);
             }
