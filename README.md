@@ -24,7 +24,8 @@ Weren't you reading above
 
 > Zero setup, install and it "Just Works"
 
-You can find the installers over at our [Releases Page](https://github.com/MarshallOfSound/NVM-for-Windows/releases)
+You can find the installers over at our [Releases Page](https://github.com/MarshallOfSound/NVM-for-Windows/releases)  
+You should uninstall your existing Node.JS installations before trying to use this.
 
 ## Usage
 
