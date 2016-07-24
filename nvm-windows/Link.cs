@@ -11,7 +11,12 @@ namespace nvm_windows
     {
         public static void Run(LinkOptions opts)
         {
-            LinkWithID(Utils.getCurrentNodeVersion(), opts.LinkID);
+            NodeVersion current = Utils.getCurrentNodeVersion();
+            LinkWithID(current, opts.LinkID);
+            if (current != null)
+            {
+                Console.WriteLine("Now using Node.JS " + current.Version);
+            }
         }
 
         public static void LinkWithID(NodeVersion v, string linkID)

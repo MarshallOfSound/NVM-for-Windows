@@ -1,4 +1,8 @@
 @echo OFF
-set LINK_ID=%time::=%
-nvm __setup_link__ %LINK_ID%
-set PATH=%PATH%;%APPDATA%\nvm-windows\.links\link-%LINK_ID%;%APPDATA%\nvm-windows\bin;
+
+set NVM_LINK_ID=%time::=%
+set NVM_LINK_ID=%NVM_LINK_ID: =%
+
+nvm __setup_link__ %NVM_LINK_ID%
+
+set PATH=%PATH%;%APPDATA%\nvm-windows\.links\link-%NVM_LINK_ID%;%APPDATA%\nvm-windows\bin;

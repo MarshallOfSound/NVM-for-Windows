@@ -19,7 +19,7 @@ namespace nvm_windows
             } else
             {
                 File.WriteAllText(Path.Combine(Utils.GetContainer(), "node-version"), target.Version);
-                Link.LinkWithID(target, Environment.GetEnvironmentVariable("LINK_ID"));
+                Link.LinkWithID(target, Environment.GetEnvironmentVariable("NVM_LINK_ID"));
                 Console.WriteLine("Now using Node.JS " + target.Version);
             }
         }
