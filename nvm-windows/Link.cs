@@ -55,15 +55,21 @@ namespace nvm_windows
             {
                 string[] lines = File.ReadAllLines(npmrcPath);
                 List<string> newLines = new List<string>();
+                bool found = false;
                 foreach (string line in lines)
                 {
                     if (new Regex(@"^prefix=").IsMatch(line))
                     {
+                        found = true;
                         newLines.Add(prefixConf);
                     } else
                     {
                         newLines.Add(line);
                     }
+                }
+                if (!found)
+                {
+                    newLines.Add(prefixConf);
                 }
                 File.WriteAllLines(npmrcPath, newLines);
             } else
