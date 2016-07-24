@@ -10,6 +10,12 @@ namespace nvm_windows
     {
         public static void Run(UseOptions opts)
         {
+            if (opts.Version == null) opts.Version = Utils.getLocalNPMRCVersion().Version;
+            if (opts.Version == null)
+            {
+                Console.Error.WriteLine("Please specifiy a version to install");
+                return;
+            }
             List<NodeVersion> versions = List.GetLocalVersions();
 
             NodeVersion target = VersionResolver.Resolve(versions, opts.Version);

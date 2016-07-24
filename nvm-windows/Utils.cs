@@ -65,5 +65,14 @@ namespace nvm_windows
             }
             return null;
         }
+
+        public static NodeVersion getLocalNPMRCVersion()
+        {
+            string npmrc = Path.Combine(Directory.GetCurrentDirectory(), ".npmrc");
+            if (!File.Exists(npmrc)) return null;
+            NodeVersion tmp = new NodeVersion();
+            tmp.Version = File.ReadAllText(npmrc);
+            return tmp;
+        }
     }
 }

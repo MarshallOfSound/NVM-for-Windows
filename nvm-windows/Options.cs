@@ -19,14 +19,14 @@ namespace nvm_windows
     [Verb("install", HelpText = "Install given version")]
     class InstallOptions
     {
-        [Value(0, Required=true, MetaName="Target Version")]
+        [Value(0, MetaName="Target Version")]
         public string Version { get; set; }
     }
 
     [Verb("use", HelpText = "Use given version")]
     class UseOptions
     {
-        [Value(0, Required = true, MetaName = "Target Version")]
+        [Value(0, MetaName = "Target Version")]
         public string Version { get; set; }
     }
 
