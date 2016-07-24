@@ -41,7 +41,7 @@ namespace nvm_windows
         }
     }
 
-    class NodeVersion
+    class NodeVersion : IComparable
     {
         public string Version { get; set; }
         public string Npm { get; set; }
@@ -55,6 +55,18 @@ namespace nvm_windows
                 SemVer = SemVersion.Parse(Version.TrimStart('v'));
             }
             return SemVer;
+        }
+
+        public int CompareTo(object obj)
+        {
+            NodeVersion nv;
+            try {
+                nv = (NodeVersion)obj;
+            } catch
+            {
+                return 0;
+            }
+            return this.GetSemVer().CompareByPrecedence(nv.GetSemVer());
         }
     }
 }

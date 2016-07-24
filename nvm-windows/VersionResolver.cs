@@ -81,6 +81,12 @@ namespace nvm_windows
 
         private static NodeVersion ResolveByName(List<NodeVersion> versions, string name)
         {
+            switch (name)
+            {
+                case "latest":
+                    versions.Sort();
+                    return versions[0];
+            }
             return null;
         }
     }
