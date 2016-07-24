@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="{F2BF8518-D78A-4A58-A78F-4C9518BC6676}" Name="NVM for Windows" Language="1033" Version="1.0.0.0" Manufacturer="MarshallOfSound" UpgradeCode="4c1d2907-6d17-4105-9037-91375cd966eb">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="Setup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="EnvironmentComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="nvm" />
+			</Directory>
+      <Directory Id="LINKFOLDER" Name=".nvm" />
+		</Directory>
+
+    <SetDirectory Id="LINKFOLDER" Value="[WindowsVolume].nvm" />
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent" Guid="{1AD396E7-EC02-45D5-9077-60C615EF3230}">
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+        <File Source="..\nvm-windows\bin\Release\7z64.dll" />
+        <File Source="..\nvm-windows\bin\Release\7z86.dll" />
+        <File Source="..\nvm-windows\bin\Release\CommandLine.dll" />
+        <File Source="..\nvm-windows\bin\Release\ICSharpCode.SharpZipLib.dll" />
+        <File Source="..\nvm-windows\bin\Release\Newtonsoft.Json.dll" />
+        <File Source="..\nvm-windows\bin\Release\nvm.exe" />
+        <File Source="..\nvm-windows\bin\Release\Semver.dll" />
+        <File Source="..\nvm-windows\bin\Release\setup.cmd" />
+        <File Source="..\nvm-windows\bin\Release\SevenZipLib.dll" />
+      </Component>
+		</ComponentGroup>
+
+    <ComponentGroup Id="EnvironmentComponents" Directory="LINKFOLDER">
+      <Component Id="AutoRunner" Guid="" Win64="yes">
+        <Condition>VersionNT64</Condition>
+        <RegistryKey Root="HKLM"
+                     Key="SOFTWARE\Microsoft\Command Processor"
+              Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Name="AutoRun" Value="C:\.nvm\setup.cmd"/>
+        </RegistryKey>
+      </Component>
+      <Component Id="PathModifier" Guid="{41AF9BCD-BDC8-4F55-A9B4-188517629750}" KeyPath="yes">
+        <File Id="SetupFile" Source="..\nvm-windows\bin\Release\setup.cmd" />
+        <RegistryKey Root="HKLM"
+                     Key="SOFTWARE\Microsoft\Command Processor"
+              Action="createAndRemoveOnUninstall">
+          <RegistryValue Type="string" Name="AutoRun" Value="C:\.nvm\setup.cmd"/>
+        </RegistryKey>
+        <Environment Id="PATH" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+</Wix>
