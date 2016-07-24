@@ -23,7 +23,10 @@ namespace nvm_windows
             
             foreach (NodeVersion v in versions)
             {
-                Console.WriteLine(v.Version);
+                if (!opts.Remote || opts.All || v.GetSemVer().Major != 0)
+                {
+                    Console.WriteLine(v.Version);
+                }
             }
         }
 

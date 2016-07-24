@@ -11,6 +11,9 @@ namespace nvm_windows
     {
         [Option]
         public bool Remote { get; set; }
+
+        [Option]
+        public bool All { get; set; }
     }
 
     [Verb("install", HelpText = "Install given version")]
