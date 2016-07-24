@@ -43,6 +43,7 @@ namespace nvm_windows
                     versions.Add(tmp);
                 }
             }
+            versions.Sort();
             return versions;
         }
     }

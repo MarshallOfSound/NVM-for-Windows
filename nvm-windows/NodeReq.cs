@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Semver;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,35 +37,6 @@ namespace nvm_windows
                 versions = JsonConvert.DeserializeObject<List<NodeVersion>>(MakeRequest("index.json"));
             }
             return versions;
-        }
-    }
-
-    class NodeVersion : IComparable
-    {
-        public string Version { get; set; }
-        public string Npm { get; set; }
-
-        private SemVersion SemVer = null;
-
-        public SemVersion GetSemVer()
-        {
-            if (SemVer == null)
-            {
-                SemVer = SemVersion.Parse(Version.TrimStart('v'));
-            }
-            return SemVer;
-        }
-
-        public int CompareTo(object obj)
-        {
-            NodeVersion nv;
-            try {
-                nv = (NodeVersion)obj;
-            } catch
-            {
-                return 0;
-            }
-            return this.GetSemVer().CompareByPrecedence(nv.GetSemVer());
         }
     }
 }
